@@ -1,26 +1,210 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<html>
 <body>
     <canvas width="600" height="600"></canvas>
     
     <script>
         let canvas = document.querySelector('canvas');
         let context = canvas.getContext('2d');
+        const CSS_COLOR_NAMES = [
+            "AliceBlue",
+            "AntiqueWhite",
+            "Aqua",
+            "Aquamarine",
+            "Azure",
+            "Beige",
+            "Bisque",
+            "Black",
+            "BlanchedAlmond",
+            "Blue",
+            "BlueViolet",
+            "Brown",
+            "BurlyWood",
+            "CadetBlue",
+            "Chartreuse",
+            "Chocolate",
+            "Coral",
+            "CornflowerBlue",
+            "Cornsilk",
+            "Crimson",
+            "Cyan",
+            "DarkBlue",
+            "DarkCyan",
+            "DarkGoldenRod",
+            "DarkGray",
+            "DarkGrey",
+            "DarkGreen",
+            "DarkKhaki",
+            "DarkMagenta",
+            "DarkOliveGreen",
+            "DarkOrange",
+            "DarkOrchid",
+            "DarkRed",
+            "DarkSalmon",
+            "DarkSeaGreen",
+            "DarkSlateBlue",
+            "DarkSlateGray",
+            "DarkSlateGrey",
+            "DarkTurquoise",
+            "DarkViolet",
+            "DeepPink",
+            "DeepSkyBlue",
+            "DimGray",
+            "DimGrey",
+            "DodgerBlue",
+            "FireBrick",
+            "FloralWhite",
+            "ForestGreen",
+            "Fuchsia",
+            "Gainsboro",
+            "GhostWhite",
+            "Gold",
+            "GoldenRod",
+            "Gray",
+            "Grey",
+            "Green",
+            "GreenYellow",
+            "HoneyDew",
+            "HotPink",
+            "IndianRed",
+            "Indigo",
+            "Ivory",
+            "Khaki",
+            "Lavender",
+            "LavenderBlush",
+            "LawnGreen",
+            "LemonChiffon",
+            "LightBlue",
+            "LightCoral",
+            "LightCyan",
+            "LightGoldenRodYellow",
+            "LightGray",
+            "LightGrey",
+            "LightGreen",
+            "LightPink",
+            "LightSalmon",
+            "LightSeaGreen",
+            "LightSkyBlue",
+            "LightSlateGray",
+            "LightSlateGrey",
+            "LightSteelBlue",
+            "LightYellow",
+            "Lime",
+            "LimeGreen",
+            "Linen",
+            "Magenta",
+            "Maroon",
+            "MediumAquaMarine",
+            "MediumBlue",
+            "MediumOrchid",
+            "MediumPurple",
+            "MediumSeaGreen",
+            "MediumSlateBlue",
+            "MediumSpringGreen",
+            "MediumTurquoise",
+            "MediumVioletRed",
+            "MidnightBlue",
+            "MintCream",
+            "MistyRose",
+            "Moccasin",
+            "NavajoWhite",
+            "Navy",
+            "OldLace",
+            "Olive",
+            "OliveDrab",
+            "Orange",
+            "OrangeRed",
+            "Orchid",
+            "PaleGoldenRod",
+            "PaleGreen",
+            "PaleTurquoise",
+            "PaleVioletRed",
+            "PapayaWhip",
+            "PeachPuff",
+            "Peru",
+            "Pink",
+            "Plum",
+            "PowderBlue",
+            "Purple",
+            "RebeccaPurple",
+            "Red",
+            "RosyBrown",
+            "RoyalBlue",
+            "SaddleBrown",
+            "Salmon",
+            "SandyBrown",
+            "SeaGreen",
+            "SeaShell",
+            "Sienna",
+            "Silver",
+            "SkyBlue",
+            "SlateBlue",
+            "SlateGray",
+            "SlateGrey",
+            "Snow",
+            "SpringGreen",
+            "SteelBlue",
+            "Tan",
+            "Teal",
+            "Thistle",
+            "Tomato",
+            "Turquoise",
+            "Violet",
+            "Wheat",
+            "White",
+            "WhiteSmoke",
+            "Yellow",
+            "YellowGreen",
+        ]
 
-        context.lineWidth = 4;
-        context.beginPath();
-        context.rect(100,100,400,400);
-        context.stroke();
+        getRandomInt = (min, max) => {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min);
+        }
 
-        context.beginPath();
-        context.arc(300,300,100,0,Math.PI * 2);
-        context.stroke();
+        
+        drawCanvas = () => {
+            for (let i = 0; i < 5; i++)  {
+                for (let j = 0; j < 5; j++) {
+                    let width = 60;
+                    let height = 60;
+                    let gap = 20;
+                    let x = 100 + (width + gap) * i;
+                    let y = 100 + (height + gap) * j;
+                    let rdn = getRandomInt(1, 20)
+                    let outerColor = getRandomInt(0, CSS_COLOR_NAMES.length-1);
+                    let innerColor = getRandomInt(0, CSS_COLOR_NAMES.length-1);
+                    
+                    context.lineWidth = getRandomInt(2 ,8);
+                    context.beginPath();
+                    context.rect(x, y, width, height);
+                    context.strokeStyle = CSS_COLOR_NAMES[outerColor];
+                    context.stroke();
+
+                    if ( Math.random() > 0.7 ) {
+                        context.beginPath();
+                        context.rect(x + rdn, y + rdn, width - rdn*2, height - rdn*2)
+                        context.strokeStyle = CSS_COLOR_NAMES[innerColor];
+                        context.stroke();
+                    }
+                }
+            }
+        }
+
+        clearCanvas = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height)
+        }
+
+        const interval = setInterval( () => {
+            drawCanvas();
+        }, 500);
+
+        const interval2 = setInterval( () => {
+            clearCanvas();
+            drawCanvas();
+        }, 5000);
+
+
     </script>
 </body>
 </html>
