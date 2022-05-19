@@ -1,6 +1,6 @@
 <html>
 <body>
-    <canvas width="600" height="600"></canvas>
+    <canvas width="1800" height="1800"></canvas>
     
     <script>
         let canvas = document.querySelector('canvas');
@@ -164,24 +164,24 @@
 
         
         drawCanvas = () => {
-            for (let i = 0; i < 5; i++)  {
-                for (let j = 0; j < 5; j++) {
+            for (let i = 0; i < 20; i++)  {
+                for (let j = 0; j < 10; j++) {
                     let width = 60;
                     let height = 60;
-                    let gap = 20;
-                    let x = 100 + (width + gap) * i;
-                    let y = 100 + (height + gap) * j;
-                    let rdn = getRandomInt(1, 20)
+                    let gap = 10;
+                    let x = 80 + (width + gap) * i;
+                    let y = 80 + (height + gap) * j;
+                    let rdn = getRandomInt(1, 35)
                     let outerColor = getRandomInt(0, CSS_COLOR_NAMES.length-1);
                     let innerColor = getRandomInt(0, CSS_COLOR_NAMES.length-1);
                     
-                    context.lineWidth = getRandomInt(2 ,8);
+                    context.lineWidth = getRandomInt(1 ,10);
                     context.beginPath();
                     context.rect(x, y, width, height);
                     context.strokeStyle = CSS_COLOR_NAMES[outerColor];
                     context.stroke();
 
-                    if ( Math.random() > 0.7 ) {
+                    if ( Math.random() > 0.2 ) {
                         context.beginPath();
                         context.rect(x + rdn, y + rdn, width - rdn*2, height - rdn*2)
                         context.strokeStyle = CSS_COLOR_NAMES[innerColor];
@@ -197,7 +197,7 @@
 
         const interval = setInterval( () => {
             drawCanvas();
-        }, 500);
+        }, 100);
 
         const interval2 = setInterval( () => {
             clearCanvas();
