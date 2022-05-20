@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/CristianLluis/creative#readme",
   "dependencies": {
-    "canvas-sketch-cli": "^1.11.15"
+    "canvas-sketch": "^0.7.5"
   }
 }
