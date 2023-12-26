@@ -3,17 +3,24 @@ const rnd = require("canvas-sketch-util/random");
 const math = require("canvas-sketch-util/math");
 
 const settings = {
-  dimensions: [1080, 1080],
+  dimensions: [1500, 1500],
   animate: true,
 };
 
 const sketch = ({ context, width, height }) => {
   const agents = [];
-  const howManyAgents = rnd.range(500, 500);
+  // const howManyAgents = rnd.range(20, 20);
+  const howManyAgents = 150;
   const distanceThreshold = 50;
 
   for (let i = 0; i < howManyAgents; i++) {
-    agents.push(new Agent(rnd.range(0, width), rnd.range(0, height)));
+    agents.push(
+      new Agent(
+        rnd.range(0, width),
+        rnd.range(0, height),
+        i === 0 ? true : false
+      )
+    );
   }
 
   return ({ context, width, height }) => {
@@ -28,6 +35,7 @@ const sketch = ({ context, width, height }) => {
 
         if (distance > distanceThreshold) continue;
 
+        infect(agent, otherAgent);
         context.lineWidth = math.mapRange(distance, 0, distanceThreshold, 5, 1);
         context.beginPath();
         context.moveTo(agent.pos.x, agent.pos.y);
@@ -64,10 +72,12 @@ class Vector {
 }
 
 class Agent {
-  constructor(x, y) {
+  constructor(x, y, contagious) {
     this.pos = new Vector(x, y);
     this.radius = rnd.range(4, 12);
-    this.vel = new Vector(rnd.range(-3, 3), rnd.range(-3, 3));
+    this.vel = new Vector(rnd.range(-2, 2), rnd.range(-2, 2));
+    this.contagious = contagious;
+    this.contactWith = null;
   }
 
   update() {
@@ -78,14 +88,14 @@ class Agent {
   draw(context) {
     context.save();
     context.translate(this.pos.x, this.pos.y);
-
     context.lineWidth = 4;
-
+    if (this.contagious) {
+      context.fillStyle = "red";
+    }
     context.beginPath();
     context.arc(0, 0, this.radius, 0, Math.PI * 2);
     context.fill();
     context.stroke();
-
     context.restore();
   }
 
@@ -101,3 +111,20 @@ class Agent {
     if (this.pos.y >= height) this.pos.y = 0;
   }
 }
+
+const INFECTION_PROBABILITY = 0.25;
+
+const infect = function (person1, person2) {
+  if (
+    person1.contagious ^ person2.contagious &&
+    person1.contactWith !== person2
+  ) {
+    const random = Math.random();
+    person1.contactWith = person2;
+    person2.contactWith = person1;
+    if (random < INFECTION_PROBABILITY) {
+      person1.contagious = true;
+      person2.contagious = true;
+    }
+  }
+};
